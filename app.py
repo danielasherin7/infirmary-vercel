@@ -8,10 +8,11 @@ Why this differs from the local version:
 Without DATABASE_URL (running on your own laptop) it falls back to a local SQLite file.
 """
 import os, re, sqlite3, time
-from flask import Flask, jsonify, request, session, Response, g, send_from_directory
+from flask import Flask, jsonify, request, session, Response, g
 from werkzeug.exceptions import HTTPException
 from werkzeug.security import generate_password_hash, check_password_hash
 from pq import PriorityQueue
+from page import HTML
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 DATABASE_URL = os.environ.get("DATABASE_URL") or os.environ.get("POSTGRES_URL") or ""
@@ -148,8 +149,8 @@ def need(role):
 
 # ---------- pages and settings ----------
 @app.get("/")
-def index():          # on Vercel the CDN serves public/index.html; this is only used on a laptop
-    return send_from_directory(os.path.join(BASE, "public"), "index.html")
+def index():
+    return Response(HTML, mimetype="text/html", headers={"Cache-Control": "no-cache"})
 
 
 @app.get("/api/config")
