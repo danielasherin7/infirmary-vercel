@@ -1,0 +1,6 @@
+infirmary.db
+__pycache__/
+*.pyc
+.venv/
+.env
+.vercel/
